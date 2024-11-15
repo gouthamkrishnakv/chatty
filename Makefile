@@ -1,8 +1,12 @@
-.PHONY: dev generate opendb
+.PHONY: build run dev generate opendb
 	
 build:
 	make generate
 	go build -o chatty cmd/main.go	
+
+run:
+	make build
+	./chatty
 
 dev:
 	air
