@@ -1,0 +1,45 @@
+syntax = "proto3";
+
+option go_package = "github.com/gouthamkrishnakv/chatty/proto";
+
+message User {
+  uint32 UserID = 1;
+  string Nickname = 2;
+}
+
+message MessageObj {
+  uint32 MessageID = 1;
+  User Author = 2;
+  string Message = 3;
+}
+
+enum StatusCode {
+  // 0 is success and non-0 is falure following the unix process code
+  // convention.
+  Success = 0;
+  Failure = 1;
+}
+
+message JoinRequest {
+  string Nickname = 1;
+}
+
+message JoinResponse {
+  // Join can either be success or failure, determined by 0 or 1.
+  User user = 1;
+}
+
+message CloseRequest {
+  uint32 UserID = 1;
+}
+
+message CloseResponse {
+  StatusCode status = 1;
+}
+
+service ChatService {
+  rpc Join (JoinRequest) returns (JoinResponse) {};
+  rpc Send  (MessageObj) returns (MessageObj) {};
+  rpc StreamMessage (User) returns (stream MessageObj) {};
+  rpc Close (CloseRequest) returns (CloseResponse) {};
+}
