@@ -99,6 +99,7 @@ func (s *Server) StreamMessage(user *pb.User, stream pb.ChatService_StreamMessag
 			if msg == nil {
 				log.Printf("close requested: %v", user)
 				s.connMap.Delete(userEntity.ID)
+				close(msgChannel)
 				return nil
 			} else if sendErr := stream.Send(&pb.MessageObj{
 				MessageID: msg.MessageID,
@@ -168,7 +169,8 @@ func (s *Server) Close(_ context.Context, closeReq *pb.CloseRequest) (*pb.CloseR
 	if !ok {
 		return nil, status.Errorf(codes.Internal, "invalid message channel")
 	}
+	// WARNING: Do not close the channel here, as it will cause a panic in StreamMessage.
+	// Instead, send a nil message to the channel to signal the client to close the connection.
 	msgChan <- nil
-	close(msgChan)
 	return &pb.CloseResponse{Status: pb.StatusCode_Success}, nil
 }
