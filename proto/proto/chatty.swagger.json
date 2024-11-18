@@ -1,0 +1,102 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "proto/chatty.proto",
+    "version": "version not set"
+  },
+  "tags": [
+    {
+      "name": "ChatService"
+    }
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {},
+  "definitions": {
+    "CloseResponse": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "$ref": "#/definitions/StatusCode"
+        }
+      }
+    },
+    "JoinResponse": {
+      "type": "object",
+      "properties": {
+        "user": {
+          "$ref": "#/definitions/User",
+          "description": "Join can either be success or failure, determined by 0 or 1."
+        }
+      }
+    },
+    "MessageObj": {
+      "type": "object",
+      "properties": {
+        "MessageID": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "Author": {
+          "$ref": "#/definitions/User"
+        },
+        "Message": {
+          "type": "string"
+        }
+      }
+    },
+    "StatusCode": {
+      "type": "string",
+      "enum": [
+        "Success",
+        "Failure"
+      ],
+      "default": "Success",
+      "description": " - Success: 0 is success and non-0 is falure following the unix process code\nconvention."
+    },
+    "User": {
+      "type": "object",
+      "properties": {
+        "UserID": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "Nickname": {
+          "type": "string"
+        }
+      }
+    },
+    "protobufAny": {
+      "type": "object",
+      "properties": {
+        "@type": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": {}
+    },
+    "rpcStatus": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "message": {
+          "type": "string"
+        },
+        "details": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/protobufAny"
+          }
+        }
+      }
+    }
+  }
+}

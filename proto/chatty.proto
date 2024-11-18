@@ -2,6 +2,34 @@ syntax = "proto3";
 
 option go_package = "github.com/gouthamkrishnakv/chatty/proto";
 
+import "google/api/annotations.proto";
+
+option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_swagger) =
+{
+  info: {
+    title: "ChattyService";
+    version: "1.0";
+    contact: {
+      name: "Goutham Krishna K V";
+      url: "https://github.com/gouthamkrishnakv";
+    };
+  };
+  schemes: HTTP;
+  consumes: "application/json";
+  products: "application/json";
+  responses: {
+    key: "404";
+    value: {
+      description: "Returned when the resource does not exist.";
+      schema: {
+        json_schema: {
+          type: STRING;
+        }
+      }
+    }
+  }
+};
+
 message User {
   uint32 UserID = 1;
   string Nickname = 2;
@@ -38,7 +66,11 @@ message CloseResponse {
 }
 
 service ChatService {
-  rpc Join (JoinRequest) returns (JoinResponse) {};
+  rpc Join (JoinRequest) returns (JoinResponse) {
+    option(google.api.http) = {
+     get: "/api/join",
+    };
+  };
   rpc Send  (MessageObj) returns (MessageObj) {};
   rpc StreamMessage (User) returns (stream MessageObj) {};
   rpc Close (CloseRequest) returns (CloseResponse) {};

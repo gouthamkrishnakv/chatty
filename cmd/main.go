@@ -45,7 +45,7 @@ func setupSignalContext() (context.Context, context.CancelFunc) {
 }
 
 func setupGRPCServer() (*grpc.Server, net.Listener) {
-	netListener, listenErr := net.Listen("tcp", ":8080")
+	netListener, listenErr := net.Listen("tcp", ":8000")
 	if listenErr != nil {
 		log.Fatalf("failed to listen: %v", listenErr)
 	}
